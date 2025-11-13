@@ -88,37 +88,25 @@ setup_frontend_node() {
     return 1
   fi
 
-  echo "[node] frontend 用の Node.js を準備します..."
+  echo "[node] frontend を pnpm で初期化します..."
   volta install node@20 || true
 
   if has_cmd corepack; then
     corepack enable || true
+    corepack prepare pnpm@latest --activate || true
+  fi
+  if ! has_cmd pnpm; then
+    npm -g install pnpm || true
   fi
 
   pushd "$FRONTEND_DIR" >/dev/null
   if [[ -f pnpm-lock.yaml ]]; then
-    echo "[node] pnpm-lock.yaml を検出。pnpm で依存を導入します。"
-    if has_cmd corepack; then
-      corepack prepare pnpm@latest --activate || true
-    else
-      npm -g install pnpm || true
-    fi
-    pnpm install
-  elif [[ -f yarn.lock ]]; then
-    echo "[node] yarn.lock を検出。yarn で依存を導入します。"
-    if has_cmd corepack; then
-      corepack prepare yarn@stable --activate || true
-    fi
-    yarn install --frozen-lockfile || yarn install
+    pnpm install --frozen-lockfile
   else
-    echo "[node] npm (package-lock.json) で依存を導入します。"
-    if [[ -f package-lock.json ]]; then
-      npm ci || npm install
-    else
-      npm install
-    fi
+    echo "[node] pnpm-lock.yaml が無いので新規に生成します。"
+    pnpm install
   fi
-  echo "[node] Node $(node -v), npm $(npm -v)"
+  echo "[node] Node $(node -v), pnpm $(pnpm -v)"
   popd >/dev/null
 }
 
