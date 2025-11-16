@@ -1,4 +1,4 @@
-# app//db/database.py - データベース接続とモデル定義
+# app/db/database.py - データベース接続とモデル定義
 
 import os
 from sqlalchemy import create_engine

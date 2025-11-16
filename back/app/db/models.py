@@ -1,4 +1,6 @@
-from pydantic import BaseModel
+# app/db/modeld.py
+
+from pydantic import BaseModel, ConfigDict
 from typing import Optional
 
 class BookBase(BaseModel):
@@ -16,5 +18,4 @@ class BookUpdate(BookBase):
 class Book(BookBase):
     id: int
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
