@@ -8,6 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 import uvicorn
 
+from app.api.endpoints import books
 
 app = FastAPI(title="C0de Hackathon Backend")
 
@@ -17,6 +18,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.include_router(books.router, prefix="/books", tags=["books"])
 
 
 @app.get("/api/health")
