@@ -24,6 +24,7 @@ class Book(Base):
     title = Column(String, index=True)
     author = Column(String)
     isbn = Column(String, unique=True, index=True)
+    cover_image_url = Column(String)
     description = Column(String, nullable=True)
     status = Column(
         String,
