@@ -18,6 +18,7 @@ class BookBase(BaseModel):
     title: str
     author: str
     isbn: str
+    cover_image_url: Optional[str] = None
     description: Optional[str] = None
     status: BookStatus = BookStatus.STORE   
     last_modified: datetime = Field(default_factory=get_utcnow_aware)
