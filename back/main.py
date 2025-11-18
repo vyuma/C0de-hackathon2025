@@ -10,7 +10,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 
-from api.routers import external_api, crud, initialize
+from api.routers import external_api, crud, initialize, status
 
 app = FastAPI(title="C0de Hackathon Backend")
 
@@ -30,6 +30,8 @@ app.include_router(crud.router, prefix="/books", tags=["books"])
 ### app/endpoints/initialize.py データベースの初期化エンドポイント
 app.include_router(initialize.router, prefix="/initialize", tags=["initialize"])
 
+### app/endpoints/initialize.py ステータスカウント取得エンドポイント
+app.include_router(status.router, prefix="/status/count", tags=["status count"])
 
 @app.get("/api/health")
 def health() -> dict[str, str]:
