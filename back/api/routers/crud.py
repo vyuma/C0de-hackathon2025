@@ -6,6 +6,7 @@ from typing import Optional, List
 from sqlalchemy.orm import Session
 from back.database import connection
 from back.database.models import book_model
+from back.app.services.put_service import update_book_details
 
 router = APIRouter()
 
@@ -35,7 +36,7 @@ def read_book(book_id: int, session: Session = Depends(connection.get_db)):
 # 更新
 @router.put("/{book_id}", response_model=books.Book)
 def update_book(book_id: int, book: books.BookUpdate, session: Session = Depends(connection.get_db)):
-    updated_book = connection.update_book_details(session, book_id, book) 
+    updated_book = update_book_details(session, book_id, book) 
     if updated_book is None:
         raise HTTPException(status_code=404, detail="Book not found")
     return updated_book
