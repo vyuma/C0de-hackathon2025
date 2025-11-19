@@ -1,10 +1,10 @@
 # api/routers/status.py
 
-from back.app.schemas.books import BookStatus
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
+from back.app.schemas.books import BookStatus
 from back.database import connection
-from back.database.models.book_model import Books # Direct import of the model class
+from back.database.models.book_model import Books
 
 
 router = APIRouter()

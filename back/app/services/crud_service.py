@@ -41,3 +41,25 @@ def update_book_details(db: Session, book_id: int, update_data: BookUpdate) -> O
     db.refresh(db_book)
     return db_book
 
+
+def update_book_status(session: Session, book_id: int, new_status: str) -> Optional[Books]:
+    """
+    Updates only the 'status' and relevant timestamps for a specific book.
+    """
+    db_book = session.query(Books).filter(Books.id == book_id).first()
+
+    if db_book is None:
+        return None
+    
+    if db_book.status != new_status:
+        now_utc = datetime.now(timezone.utc)
+        
+        db_book.status = new_status
+        db_book.last_modified = now_utc
+        db_book.status_changed_at = now_utc
+        
+        session.commit()
+        session.refresh(db_book)
+
+    return db_book
+

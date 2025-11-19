@@ -6,7 +6,7 @@ from back.app.services import external_api_service
 
 router = APIRouter()
 
-@router.get("/{isbn}", response_model=Optional[external_api_service.BookInfo])
+@router.get("/{isbn}", response_model=Optional[external_api_service.BookExternalInfo])
 async def get_book(isbn: str):
     book = await external_api_service.get_book_info(isbn)
     if book:
