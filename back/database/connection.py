@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session, sessionmaker
 from typing import  Generator, Any
 
 from back.database.models.book_model import Books 
-from back.app.services.external_api_service import BookInfo
+from back.app.services.external_api_service import BookExternalInfo
 
 
 DATABASE_URL = os.getenv("DATABASE_URL")
@@ -26,7 +26,7 @@ def get_engine() -> Any:
     """Dependency function to get the SQLAlchemy engine."""
     return engine
 
-def create_book(db: Session, book_data: BookInfo) -> Books:
+def create_book(db: Session, book_data: BookExternalInfo) -> Books:
     """
     Creates a new Books record from the external BookInfo model,
     filling in default values for local-only fields.

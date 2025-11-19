@@ -36,3 +36,12 @@ class BookStatusUpdate(BaseModel):
 class Book(BookBase):
     id: int
     model_config = ConfigDict(from_attributes=True)
+
+
+class BookExternalInfo(BaseModel):
+    isbn: str
+    title: str
+    author: str
+    publisher: Optional[str] = None
+    publication_date: Optional[str] = None
+    cover_image_url: Optional[str] = None

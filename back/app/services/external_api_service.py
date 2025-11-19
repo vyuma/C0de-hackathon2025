@@ -7,7 +7,7 @@ import asyncio
 import logging
 from typing import Optional
 from dotenv import load_dotenv
-from back.app.schemas.external_books import BookInfo
+from back.app.schemas.books import BookExternalInfo
 
 logger = logging.getLogger(__name__)
 
@@ -17,7 +17,7 @@ GOOGLE_BOOKS_API_KEY = os.getenv("GOOGLE_BOOKS_API_KEY")
 NDL_SEARCH_API_URL = os.getenv("NDL_SEARCH_API_URL")
 
 
-async def fetch_book_from_google_books(isbn: str) -> Optional[BookInfo]:
+async def fetch_book_from_google_books(isbn: str) -> Optional[BookExternalInfo]:
     try:
         async with httpx.AsyncClient() as client:
             url = f"https://www.googleapis.com/books/v1/volumes?q=isbn:{isbn}&key={GOOGLE_BOOKS_API_KEY}"
@@ -35,7 +35,7 @@ async def fetch_book_from_google_books(isbn: str) -> Optional[BookInfo]:
                 image_links = book_data.get("imageLinks")
                 cover_image_url = image_links.get("thumbnail") if image_links else None
 
-                return BookInfo(
+                return BookExternalInfo(
                     isbn=isbn,
                     title=title,
                     author=", ".join(authors),
@@ -61,7 +61,7 @@ NDL_NAMESPACES = {
     'rss': 'http://purl.org/rss/1.0/'
 }
 
-def _map_ndl_data(isbn: str, xml_content) -> Optional[BookInfo]:
+def _map_ndl_data(isbn: str, xml_content) -> Optional[BookExternalInfo]:
     try:
         root = ET.fromstring(xml_content)
         record = root.find('.//sru:record', NDL_NAMESPACES)
@@ -77,7 +77,7 @@ def _map_ndl_data(isbn: str, xml_content) -> Optional[BookInfo]:
 
         published_date = date_element.text if date_element is not None else None
 
-        return BookInfo(
+        return BookExternalInfo(
             isbn=isbn,
             title=title_element.text if title_element is not None else 'unknown title',
             author=author_str,
@@ -94,7 +94,7 @@ def _map_ndl_data(isbn: str, xml_content) -> Optional[BookInfo]:
         return None
 
 
-async def fetch_book_from_ndl(isbn: str) -> Optional[BookInfo]:
+async def fetch_book_from_ndl(isbn: str) -> Optional[BookExternalInfo]:
     """
     ISBNを元に国立国会図書館サーチAPI (SRU) を呼び出し、書籍情報を取得する。
     httpxのparams機能でURLエンコーディングとSRUクエリの構築を自動化。
@@ -133,7 +133,7 @@ async def fetch_book_from_ndl(isbn: str) -> Optional[BookInfo]:
         return None
 
 
-async def get_book_info(isbn: str) -> Optional[BookInfo]:
+async def get_book_info(isbn: str) -> Optional[BookExternalInfo]:
     book = await fetch_book_from_google_books(isbn)
     if book:
         return book
