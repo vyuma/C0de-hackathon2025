@@ -30,6 +30,9 @@ class BookCreate(BookBase):
 class BookUpdate(BookBase):
     pass
 
+class BookStatusUpdate(BaseModel):
+    status: BookStatus
+
 class Book(BookBase):
     id: int
     model_config = ConfigDict(from_attributes=True)

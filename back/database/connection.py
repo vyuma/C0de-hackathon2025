@@ -1,13 +1,11 @@
-# app/services/db_service.py
+# database/connection.py
 
 import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
-from datetime import datetime, timezone
-from typing import Optional, Generator, Any
+from typing import  Generator, Any
 
 from back.database.models.book_model import Books 
-from back.app.schemas.books import BookUpdate, BookStatus
 from back.app.services.external_api_service import BookInfo
 
 
@@ -46,3 +44,4 @@ def create_book(db: Session, book_data: BookInfo) -> Books:
     db.commit()
     db.refresh(db_book)
     return db_book
+
