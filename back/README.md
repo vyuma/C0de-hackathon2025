@@ -29,7 +29,7 @@ back
 - 取得できない場合、国立国会図書館サーチAPI (SRU)にフォールバック<br>
 
 **依存関係**
-- `app/schemas/external_books.py` <br>
+- `app/schemas/books.py` <br>
 - `app/services/external_api_service.py` <br>
 
 
@@ -38,7 +38,7 @@ back
 
 **依存関係**
 - `app/schemas/books.py` <br>
-- `app/services/put_service.py` <br>
+- `app/services/crud_service.py` <br>
 - `database/connection.py` <br>
 - `database/models/book_model.py` <br>
 ---
@@ -64,6 +64,7 @@ Response body<br>
 
 **依存関係**
 - `app/services/external_api_service.py` <br>
+- `app/services/initialize_service.py` <br>
 - `database/connection.py` <br>
 - `database/models/book_model.py` <br>
 
@@ -125,5 +126,6 @@ GOOGLE BOOKS APIや国立国会図書館サーチAPI (SRU)からデータを取�
 **(注)**<br>
 スキーマを更新したいときは、他のスキーマと連携させるため、更新内容を共有してください。できるだけ早く対応します。<br>
 <small>余裕があれば、READMEに形式を追記しておいてくれると、助かります。（書き方については、このREADME上部、初期化エンドポイント部分参照）</small>
+
 
 
