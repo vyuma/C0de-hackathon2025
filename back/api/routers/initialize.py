@@ -4,7 +4,7 @@ from back.database.models import book_model
 from fastapi import APIRouter, HTTPException, Depends, Query
 from sqlalchemy.orm import Session
 from back.database import connection
-from back.app.services import external_api_service
+from back.app.services import external_api_service, initialize_service
 
 router = APIRouter()
 
@@ -60,7 +60,7 @@ async def initialize_database(
             book_info = await external_api_service.get_book_info(isbn)
             
             if book_info:
-                connection.create_book(db_session, book_info)
+                initialize_service.create_book(db_session, book_info)
                 inserted_count += 1
             else:
                 failed_isbns.append(isbn)

@@ -6,7 +6,7 @@ from typing import Optional, List
 from sqlalchemy.orm import Session
 from back.database import connection
 from back.database.models import book_model
-from back.app.services.put_service import update_book_details, update_book_status
+from back.app.services.crud_service import update_book_details, update_book_status
 
 router = APIRouter()
 
