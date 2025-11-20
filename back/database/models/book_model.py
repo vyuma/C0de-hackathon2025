@@ -35,7 +35,7 @@ class Books(Base):
         default=None,
         nullable=True
     )
-    status_read_at = Column(
+    status_reserve_at = Column(
         DateTime(timezone=True),
         default=None,
         nullable=True

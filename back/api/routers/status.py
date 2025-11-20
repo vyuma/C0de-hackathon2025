@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 from back.app.schemas.books import BookStatus
 from back.database import connection
 from back.database.models.book_model import Books
-from back.app.services.status_service import get_daily_read_counts, get_daily_reserve_cumulative_counts
+from back.app.services.status_service import get_daily_read_counts, get_daily_reserve_counts, get_daily_reserve_cumulative_counts
 
 router = APIRouter()
 
@@ -28,9 +28,9 @@ def count_read(session: Session = Depends(connection.get_db)):
     store = session.query(Books).filter(Books.status == BookStatus.STORE.value).count()
     return store
 
-# ある日の時点での読了数
+# ある日の読了数
 @router.get("/graph/ondate_read/{days}", response_model=List[Dict[str, Any]])
-async def get_books_daily_summary(days: int, db: Session = Depends(connection.get_db)):
+async def get_ondate_read(days: int, db: Session = Depends(connection.get_db)):
     if days <= 0 or days > 365:
         raise HTTPException(status_code=400, detail="Days parameter must be between 1 and 365.")
     try:
@@ -41,9 +41,22 @@ async def get_books_daily_summary(days: int, db: Session = Depends(connection.ge
         print(f"Error fetching daily summary: {e}")
         raise HTTPException(status_code=500, detail="Internal server error")
 
+# ある日の購入数
+@router.get("/graph/ondate_reserve/{days}", response_model=List[Dict[str, Any]])
+async def get_ondate_reserve(days: int, db: Session = Depends(connection.get_db)):
+    if days <= 0 or days > 365:
+        raise HTTPException(status_code=400, detail="Days parameter must be between 1 and 365.")
+    try:
+        read_counts = get_daily_reserve_counts(db, days)
+        return read_counts
+
+    except Exception as e:
+        print(f"Error fetching daily summary: {e}")
+        raise HTTPException(status_code=500, detail="Internal server error")
+
 # ある日の時点での積読数
 @router.get("/graph/accumulative_reserve/{days}", response_model=List[Dict[str, Any]])
-async def get_books_daily_summary(days: int, db: Session = Depends(connection.get_db)):
+async def get_accumulative_reserve(days: int, db: Session = Depends(connection.get_db)):
     if days <= 0 or days > 365:
         raise HTTPException(status_code=400, detail="Days parameter must be between 1 and 365.")
     try:
