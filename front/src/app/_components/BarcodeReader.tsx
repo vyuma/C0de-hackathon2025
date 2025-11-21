@@ -3,6 +3,23 @@
 import { BrowserMultiFormatReader } from '@zxing/browser';
 import { useEffect, useState, useRef } from 'react';
 
+const registerBook = async (isbn: string) => {
+    try {
+        const response = await fetch("api/register/", {
+            method: "POST",
+            headers: { "Content-Type": "application/json", },
+            body: JSON.stringify({ isbn }),
+        });
+
+        if (!response.ok) {
+            throw new Error("Failed to register book");
+        }
+        console.log("Book registered successfully");
+    } catch (error) {
+        console.error("Error registering book:", error);
+    }
+};
+
 export default function BarcodeReader() {
     const videoRef = useRef<HTMLVideoElement>(null);
     const [isbnText, setISBNText] = useState("");
@@ -54,7 +71,9 @@ export default function BarcodeReader() {
                 <div className="fixed inset-0 bg-white flex flex-col items-center justify-center z-50">
                     <p>「{bookTitle}」で間違いありませんか？</p>
                     <button
-                        onClick={() => {
+                        onClick={async () => {
+                            console.log("Registering book with ISBN:", isbnText);
+                            await registerBook(isbnText);
                             setModalOpen(false);
                             setBookTitle("");
                             setISBNText("");
@@ -68,7 +87,7 @@ export default function BarcodeReader() {
             }
             <video ref={videoRef} style={{width: "100%"}}/>
             <button onClick={() => {
-                setISBNText("9784087448221");
+                setISBNText("9784575672459");
             }} className="mt-4 px-4 py-2 bg-blue-500 text-white rounded">
                 バーコード読み取りテスト
             </button>
