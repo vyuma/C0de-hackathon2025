@@ -73,7 +73,7 @@ def read_book(book_id: int, session: Session = Depends(connection.get_db)):
 # 金額を更新 
 @router.patch("/{book_id}/cost", response_model=books.Book)
 def update_book_detail_cost(book_id: int, cost_update: books.BookCostUpdate, session: Session = Depends(connection.get_db)):
-    updated_book = session.query(books.Books).filter(books.Books.id == book_id).first()
+    updated_book = session.query(book_model.Books).filter(book_model.Books.id == book_id).first()
     if updated_book is None:
         raise HTTPException(status_code=404, detail="Book not found")
     updated_book.cost = cost_update.cost
