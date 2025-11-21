@@ -4,7 +4,7 @@ import BarcodeReader from "../_components/BarcodeReader";
 import { useRouter } from "next/navigation";
 import { CornerDownLeft } from "lucide-react";
 
-export default async function ShootInHome() {
+export default function ShootInHome() {
     const router = useRouter();
     return (
         <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
