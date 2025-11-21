@@ -40,6 +40,8 @@ export default function BarcodeReader() {
     const [modalMessage, setModalMessage] = useState("");
     const [modalConfirmText, setModalConfirmText] = useState("");
     const [modalType, setModalType] = useState<ModalType>(null);
+    const [modalSecondText, setModalSecondText] = useState("");
+    const [onCloseSecond, setOnCloseSecond] = useState<(() => void) | undefined>(undefined);
     let scanning = true;
 
     const handleClose = async () => {
@@ -58,6 +60,8 @@ export default function BarcodeReader() {
 
             setModalTitle("登録結果");
             setModalConfirmText("閉じる");
+            setModalSecondText("");
+            setOnCloseSecond(undefined);
         } else if (modalType === "result") {
             setModalType(null);
             setISBNText("");
@@ -99,12 +103,20 @@ export default function BarcodeReader() {
                 setModalTitle("書籍登録確認");
                 setModalMessage(`タイトル: ${data.title}\nISBN: ${isbnText}`);
                 setModalConfirmText("登録する");
+                setModalSecondText("キャンセル");
+                setOnCloseSecond(() => () => {
+                    setModalType(null);
+                    setISBNText("");
+                    scanning = true;
+                });
             } catch (error) {
                 console.error("Error fetching book info:", error);
                 setModalType("result");
                 setModalTitle("エラー");
                 setModalMessage("書籍情報の取得に失敗しました。");
                 setModalConfirmText("閉じる");
+                setModalSecondText("");
+                setOnCloseSecond(undefined);
             }
         };
 
@@ -119,11 +131,14 @@ export default function BarcodeReader() {
             title={modalTitle}
             message={modalMessage}
             confirmText={modalConfirmText}
+            buttonColor={modalType === "confirm" ? "bg-blue-500 hover:bg-blue-600" : "bg-gray-300 hover:bg-gray-400"}
+            secondText={modalSecondText}
+            onCloseSecond={onCloseSecond}
         ></Modal>
         <video ref={videoRef} style={{width: "100%"}}/>
         <button onClick={() => {
             setISBNText("9784102134054");
-        }} className="mt-4 px-4 py-2 bg-blue-500 text-white rounded">
+        }} className="mt-4 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded">
             バーコード読み取りテスト
         </button>
     </>
