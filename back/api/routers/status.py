@@ -10,7 +10,7 @@ from back.app.services.status_service import get_daily_read_counts, get_daily_st
 
 router = APIRouter()
 
-# 読込数
+# 登録数
 @router.get("/count/reserve", response_model=int)
 def count_reserve(session: Session = Depends(connection.get_db)):
     reserved = session.query(Books).filter(Books.status == BookStatus.RESERVE.value).count()
