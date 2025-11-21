@@ -41,10 +41,30 @@ def read_books(skip: int = 0, limit: int = 100, session: Session = Depends(conne
     books = session.query(book_model.Books).offset(skip).limit(limit).all()
     return books
 
+# 登録本更新順
+@router.get("/reserve", response_model=List[books.Book])
+def read_books_reserve(skip: int = 0, limit: int = 100, session: Session = Depends(connection.get_db)):
+    status_reserve_books = session.query(book_model.Books).filter(book_model.Books.status == books.BookStatus.RESERVE.value).order_by(book_model.Books.last_modified).offset(skip).limit(limit).all()
+    return status_reserve_books
+
+
+# 読了本更新順
+@router.get("/read", response_model=List[books.Book])
+def read_books_read(skip: int = 0, limit: int = 100, session: Session = Depends(connection.get_db)):
+    status_read_books = session.query(book_model.Books).filter(book_model.Books.status == books.BookStatus.READ.value).order_by(book_model.Books.last_modified).offset(skip).limit(limit).all()
+    return status_read_books
+
+# 積読本更新順
+@router.get("/store", response_model=List[books.Book])
+def read_books_store(skip: int = 0, limit: int = 100, session: Session = Depends(connection.get_db)):
+    status_store_books = session.query(book_model.Books).filter(book_model.Books.status == books.BookStatus.STORE.value).order_by(book_model.Books.last_modified).offset(skip).limit(limit).all()
+    return status_store_books
+
+
 # 特定の書籍取得
 @router.get("/{book_id}", response_model=books.Book)
 def read_book(book_id: int, session: Session = Depends(connection.get_db)):
-    book = session.query(book_model.Books).filter(book_model.Books.id == book_id).first()
+    book = session.query(books.Book).filter(book_model.Books.id == book_id).first()
     if book is None:
         raise HTTPException(status_code=404, detail="Book not found")
     return book
@@ -53,7 +73,7 @@ def read_book(book_id: int, session: Session = Depends(connection.get_db)):
 # 金額を更新 
 @router.patch("/{book_id}/cost", response_model=books.Book)
 def update_book_detail_cost(book_id: int, cost_update: books.BookCostUpdate, session: Session = Depends(connection.get_db)):
-    updated_book = session.query(books.Books).filter(books.Books.id == book_id).first()
+    updated_book = session.query(book_model.Books).filter(book_model.Books.id == book_id).first()
     if updated_book is None:
         raise HTTPException(status_code=404, detail="Book not found")
     updated_book.cost = cost_update.cost
