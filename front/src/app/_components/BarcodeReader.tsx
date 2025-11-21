@@ -144,7 +144,7 @@ export default function BarcodeReader() {
             message={modalMessage}
             confirmText={modalConfirmText}
         ></Modal>
-        <video ref={videoRef} style={{width: "100%"}}/>
+        <video ref={videoRef} className="w-full"/>
         <button onClick={() => {
             setISBNText("9784102134054");
         }} className="mt-4 px-4 py-2 bg-blue-500 text-white rounded">
