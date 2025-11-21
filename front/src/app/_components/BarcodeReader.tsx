@@ -113,7 +113,10 @@ export default function BarcodeReader() {
 
         const fetchBook = async () => {
             try {
-                const response = await fetch(`http://172.18.57.106:8000/external/bookinfo/${isbnText}`);
+                const response = await fetch(`/api/external/bookinfo/${isbnText}`, {
+                    method: "GET",
+                    headers: { "Content-Type": "application/json", },
+                });
                 if (!response.ok) throw new Error("Failed to fetch book info");
                 const data = await response.json();
                 setModalType("confirm");
