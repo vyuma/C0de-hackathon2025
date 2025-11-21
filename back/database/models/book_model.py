@@ -17,7 +17,7 @@ class Books(Base):
     description = Column(String, nullable=True)
     status = Column(
         String,
-        default="store",
+        default="reserve",
         nullable=False
     )
     last_modified = Column(
@@ -25,17 +25,17 @@ class Books(Base):
         default=datetime.now(timezone.utc),
         nullable=False
     )
-    created_at = Column(
+    status_reserve_at = Column(
         DateTime(timezone=True),
         default=datetime.now(timezone.utc),
         nullable=False
     )
-    status_reserve_at = Column(
+    status_store_at = Column(
         DateTime(timezone=True),
         default=None,
         nullable=True
     )
-    status_reserve_at = Column(
+    status_read_at = Column(
         DateTime(timezone=True),
         default=None,
         nullable=True
