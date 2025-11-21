@@ -25,6 +25,8 @@ def update_book_status(session: Session, book_id: int, new_status: str) -> Optio
             db_book.status_store_at = now_utc
         if new_status==BookStatus.READ:
             db_book.status_read_at = now_utc
+        if new_status==BookStatus.DETETE:
+            db_book.isbn = None
         db_book.last_modified = now_utc
         
         session.commit()
