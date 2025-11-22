@@ -1,6 +1,13 @@
 import {NextResponse, NextRequest} from 'next/server';
 
-const BACKEND_URL = process.env.BACKEND_URL ?? "http://127.0.0.1:8000";
+const BACKEND_URL =
+    process.env.NEXT_PUBLIC_BACKEND_URL ?? process.env.BACKEND_URL;
+
+if (!BACKEND_URL) {
+    throw new Error(
+        'BACKEND_URL (or NEXT_PUBLIC_BACKEND_URL) is not set; unable to proxy book info requests.'
+    );
+}
 
 export async function GET(
     request: NextRequest,
