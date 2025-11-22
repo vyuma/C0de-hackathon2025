@@ -2,6 +2,7 @@ import Graph from "./_components/Graph";
 import BookMenu from "./_components/BookMenu";
 import FabMenu from "./_components/CameraButton";
 import type { Book } from "@/types/book";
+import InitializeButton from "./_components/InitializeButton";
 
 const BACKEND_BASE_URL =
   process.env.NEXT_PUBLIC_BACKEND_URL ?? "http://127.0.0.1:8000";
@@ -168,6 +169,8 @@ export default async function Home() {
           <BookMenu prop="reserve" books={reserveBooks} />
           <BookMenu prop="read" books={readBooks} />
         </section>
+
+        <InitializeButton />
       </main>
     </div>
   );
