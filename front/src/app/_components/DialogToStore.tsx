@@ -10,10 +10,10 @@ async function patchStore(book: Book): Promise<Book> {
   try {
     const response = await fetch(`${BACKEND_BASE_URL}/books/${book.id}/status`, {
       method: "PATCH",
-       headers: {
-         "Content-Type": "application/json",
-       },
-       body: JSON.stringify({ status: "store" },),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ status: "store" },),
     });
 
     if (!response.ok) {
@@ -26,10 +26,13 @@ async function patchStore(book: Book): Promise<Book> {
       author: "",
       isbn: "",
       cover_image_url: "",
+      cost: 0,
       description: "Error",
       status: "",
       last_modified: "",
-      status_changed_at: "",
+      status_reserve_at: "",
+      status_store_at: "",
+      status_read_at: "",
       id: -1,
     };
   }
