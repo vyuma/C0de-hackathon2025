@@ -6,20 +6,23 @@ import { useRouter } from "next/navigation";
 const BACKEND_BASE_URL =
   process.env.NEXT_PUBLIC_BACKEND_URL ?? "http://127.0.0.1:8000";
 
-export default function NumberInput({ book }: {book: Book}) {
+export default function NumberInput({ book }: { book: Book }) {
   const [value, setValue] = useState(book.cost.toString());
   const router = useRouter();
 
-    async function patchCost(cost: number): Promise<Book> {
+  async function patchCost(cost: number): Promise<Book> {
     try {
-      const response = await fetch(`${BACKEND_BASE_URL}/books/${book.id}/cost`, {
-        method: "PATCH",
-         headers: {
-           "Content-Type": "application/json",
-         },
-         body: JSON.stringify({ cost },),
-      });
-  
+      const response = await fetch(
+        `${BACKEND_BASE_URL}/books/${book.id}/cost`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ cost }),
+        },
+      );
+
       if (!response.ok) {
         throw new Error(`Backend responded with ${response.status}`);
       }

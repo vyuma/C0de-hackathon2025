@@ -1,5 +1,5 @@
-import Graph from "./_components/Graph"
-import BookMenu from "./_components/BookMenu"
+import Graph from "./_components/Graph";
+import BookMenu from "./_components/BookMenu";
 import FabMenu from "./_components/CameraButton";
 import type { Book } from "@/types/book";
 
@@ -16,7 +16,7 @@ async function getSortedStore(): Promise<Book[]> {
       throw new Error(`Backend responded with ${response.status}`);
     }
 
-    return (await response.json()) as Book[]
+    return (await response.json()) as Book[];
   } catch {
     return [];
   }
@@ -32,7 +32,7 @@ async function getSortedReserve(): Promise<Book[]> {
       throw new Error(`Backend responded with ${response.status}`);
     }
 
-    return (await response.json()) as Book[]
+    return (await response.json()) as Book[];
   } catch {
     return [];
   }
@@ -48,7 +48,7 @@ async function getSortedRead(): Promise<Book[]> {
       throw new Error(`Backend responded with ${response.status}`);
     }
 
-    return (await response.json()) as Book[]
+    return (await response.json()) as Book[];
   } catch {
     return [];
   }
@@ -57,19 +57,22 @@ async function getSortedRead(): Promise<Book[]> {
 type GraphValue = {
   date: string;
   value: number;
-}
+};
 
 async function getStores(): Promise<GraphValue[]> {
   try {
-    const response = await fetch(`${BACKEND_BASE_URL}/status/graph/accumulative_store/7`, {
-      method: "GET",
-    });
+    const response = await fetch(
+      `${BACKEND_BASE_URL}/status/graph/accumulative_store/7`,
+      {
+        method: "GET",
+      },
+    );
 
     if (!response.ok) {
       throw new Error(`Backend responded with ${response.status}`);
     }
 
-    return (await response.json()) as GraphValue[]
+    return (await response.json()) as GraphValue[];
   } catch {
     return [];
   }
@@ -77,15 +80,18 @@ async function getStores(): Promise<GraphValue[]> {
 
 async function getNewStores(): Promise<GraphValue[]> {
   try {
-    const response = await fetch(`${BACKEND_BASE_URL}/status/graph/ondate_store/7`, {
-      method: "GET",
-    });
+    const response = await fetch(
+      `${BACKEND_BASE_URL}/status/graph/ondate_store/7`,
+      {
+        method: "GET",
+      },
+    );
 
     if (!response.ok) {
       throw new Error(`Backend responded with ${response.status}`);
     }
 
-    return (await response.json()) as GraphValue[]
+    return (await response.json()) as GraphValue[];
   } catch {
     return [];
   }
@@ -93,15 +99,18 @@ async function getNewStores(): Promise<GraphValue[]> {
 
 async function getNewReads(): Promise<GraphValue[]> {
   try {
-    const response = await fetch(`${BACKEND_BASE_URL}/status/graph/ondate_read/7`, {
-      method: "GET",
-    });
+    const response = await fetch(
+      `${BACKEND_BASE_URL}/status/graph/ondate_read/7`,
+      {
+        method: "GET",
+      },
+    );
 
     if (!response.ok) {
       throw new Error(`Backend responded with ${response.status}`);
     }
 
-    return (await response.json()) as GraphValue[]
+    return (await response.json()) as GraphValue[];
   } catch {
     return [];
   }
@@ -117,7 +126,7 @@ async function getCosts(): Promise<number> {
       throw new Error(`Backend responded with ${response.status}`);
     }
 
-    return (await response.json()) as number
+    return (await response.json()) as number;
   } catch {
     return -1;
   }
@@ -146,14 +155,18 @@ export default async function Home() {
     <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
       <main className="flex min-h-screen w-full max-w-3xl flex-col gap-10 py-20 px-8 text-black dark:text-zinc-50 sm:px-16">
         <FabMenu />
-        
-        <section className="space-y-6">
-          <Graph values1={stores} values2={newStores} values3={newReads} cost={cost} />
-          <BookMenu prop="store" books={storeBooks} />
-          <BookMenu prop="reserve" books={reserveBooks}/>
-          <BookMenu prop="read" books={readBooks}/>
-        </section>
 
+        <section className="space-y-6">
+          <Graph
+            values1={stores}
+            values2={newStores}
+            values3={newReads}
+            cost={cost}
+          />
+          <BookMenu prop="store" books={storeBooks} />
+          <BookMenu prop="reserve" books={reserveBooks} />
+          <BookMenu prop="read" books={readBooks} />
+        </section>
       </main>
     </div>
   );

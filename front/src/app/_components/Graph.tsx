@@ -12,7 +12,13 @@ import {
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 
 // ---- グラフコンポーネント ----
-function ChartBase({ data, color }: { data: { date: string; value: number }[]; color: string }) {
+function ChartBase({
+  data,
+  color,
+}: {
+  data: { date: string; value: number }[];
+  color: string;
+}) {
   const maxValue = data.length > 0 ? Math.max(...data.map((d) => d.value)) : 0;
   const yMax = maxValue > 0 ? Math.ceil(maxValue / 10) * 10 : 10;
 
@@ -22,7 +28,7 @@ function ChartBase({ data, color }: { data: { date: string; value: number }[]; c
         <BarChart data={data}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="date" />
-          <YAxis domain={[0, yMax]} allowDecimals={false} tickCount={6}/>
+          <YAxis domain={[0, yMax]} allowDecimals={false} tickCount={6} />
           <Tooltip />
           <Bar dataKey="value" fill={color} />
         </BarChart>
@@ -39,18 +45,29 @@ type GraphProps = {
 };
 
 // ---- メインコンポーネント ----
-export default function WeekGraph({ values1, values2, values3, cost }: GraphProps) {
+export default function WeekGraph({
+  values1,
+  values2,
+  values3,
+  cost,
+}: GraphProps) {
   return (
     <div className="w-full max-w-2xl mx-auto mt-8">
       <div className="h-64 flex justify-between py-4">
         <div className="w-1/2">
           <h1 className="text-4xl font-bold mb-6 text-center">現在の積読量</h1>
-          <h1 className="text-8xl font-bold mb-6 text-center text-red-600">{values1.length > 0 ? values1[values1.length-1].value : 0}冊</h1>
-        </div>      
+          <h1 className="text-8xl font-bold mb-6 text-center text-red-600">
+            {values1.length > 0 ? values1[values1.length - 1].value : 0}冊
+          </h1>
+        </div>
         <div className="w-1/2 py-4">
-          <h1 className="text-4xl font-bold mb-6 text-center">現在の積読総額</h1>
-          <h1 className="text-6xl font-bold mb-6 text-center text-red-600">{cost}円</h1>
-        </div>      
+          <h1 className="text-4xl font-bold mb-6 text-center">
+            現在の積読総額
+          </h1>
+          <h1 className="text-6xl font-bold mb-6 text-center text-red-600">
+            {cost}円
+          </h1>
+        </div>
       </div>
       <h1 className="text-2xl font-bold mb-6 text-left">積読グラフ</h1>
 
