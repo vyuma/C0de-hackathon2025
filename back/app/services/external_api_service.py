@@ -1,6 +1,7 @@
 # app/services/external_api_service.py - 外部API連携とデータマッピングロジック 
 
 import httpx
+import re
 import os
 import xml.etree.ElementTree as ET
 import asyncio
@@ -144,7 +145,6 @@ async def fetch_book_from_openbd(isbn: str) -> Optional[BookExternalInfo]:
             data = response.json()
 
             if data and data[0] and data[0].get("onix") != None:
-                # 必要なデータ抽出
                 summary = data[0]["summary"]
                 onix = data[0]["onix"]
                 
