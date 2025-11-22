@@ -4,11 +4,11 @@ from datetime import datetime, timezone
 from fastapi import APIRouter, HTTPException, Depends, status
 from typing import Optional, List
 from sqlalchemy.orm import Session
-from back.app.schemas import books
-from back.database import connection
-from back.database.models import book_model
-from back.app.services.crud_service import update_book_status, create_book_from_external_reserve, create_book_from_external_store
-from back.app.services import external_api_service, initialize_service
+from app.schemas import books
+from database import connection
+from database.models import book_model
+from app.services.crud_service import update_book_status, create_book_from_external_reserve, create_book_from_external_store
+from app.services import external_api_service, initialize_service
 
 router = APIRouter()
 
