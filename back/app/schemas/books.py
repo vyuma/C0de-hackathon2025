@@ -10,11 +10,12 @@ class BookStatus(str, Enum):
     STORE = 'store'
     RESERVE = 'reserve'
     READ = 'read'
+    DETETE = 'delete'
 
 class BookBase(BaseModel):
     title: str
     author: str
-    isbn: str
+    isbn: str | None
     cover_image_url: Optional[str] = None
     cost: Optional[NonNegativeInt] = 0
     description: Optional[str] = None
