@@ -3,6 +3,7 @@
 import { BrowserMultiFormatReader } from '@zxing/browser';
 import { useEffect, useState, useRef } from 'react';
 import { Modal, ModalType } from './BarcodeReaderModal';
+import AutoPopup from './AutoPopup';
 
 enum RegisterStatus {
     SUCCESS,
@@ -69,7 +70,15 @@ export default function BarcodeReader({bookRegisterMode}: BarcodeReaderProps) {
     const [modalType, setModalType] = useState<ModalType>(null);
     const [modalSecondText, setModalSecondText] = useState("");
     const [onCloseSecond, setOnCloseSecond] = useState<(() => void) | undefined>(undefined);
+    const [showPopup, setShowPopup] = useState(false);
     let scanning = true;
+
+    const handleConfirm = () => {
+        setShowPopup(false);
+        setTimeout(() => {
+            setShowPopup(true)
+        }, 10);
+    }
 
     const handleClose = async () => {
         if (modalType === "confirm") {
@@ -81,15 +90,19 @@ export default function BarcodeReader({bookRegisterMode}: BarcodeReaderProps) {
                 result = await registerStoreBook(isbnText);
             }
 
-            setModalType("result");
             if (result === RegisterStatus.SUCCESS) {
-                setModalMessage("登録が完了しました。");
+                handleConfirm();
+                setModalType(null);
+                setISBNText("");
+                scanning = true;
+                return;
             } else if (result === RegisterStatus.ALREADY_REGISTERED) {
                 setModalMessage("この書籍は既に登録されています。");
             } else {
                 setModalMessage("登録に失敗しました。");
             }
 
+            setModalType("result");
             setModalTitle("登録結果");
             setModalConfirmText("閉じる");
             setModalSecondText("");
@@ -167,6 +180,7 @@ export default function BarcodeReader({bookRegisterMode}: BarcodeReaderProps) {
             secondText={modalSecondText}
             onCloseSecond={onCloseSecond}
         ></Modal>
+        {showPopup && <AutoPopup message="登録が完了しました！" duration={3000}/>}
         <video ref={videoRef} className="w-full"/>
         {/* ここから Test 用コードです*/}
         <button onClick={() => {
