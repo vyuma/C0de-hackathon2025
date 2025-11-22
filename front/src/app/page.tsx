@@ -124,13 +124,23 @@ async function getCosts(): Promise<number> {
 }
 
 export default async function Home() {
-  const storeBooks = await getSortedStore();
-  const reserveBooks = await getSortedReserve();
-  const readBooks = await getSortedRead();
-  const stores = await getStores();
-  const newStores = await getNewStores();
-  const newReads = await getNewReads();
-  const cost = await getCosts();
+  const [
+    storeBooks,
+    reserveBooks,
+    readBooks,
+    stores,
+    newStores,
+    newReads,
+    cost,
+  ] = await Promise.all([
+    getSortedStore(),
+    getSortedReserve(),
+    getSortedRead(),
+    getStores(),
+    getNewStores(),
+    getNewReads(),
+    getCosts(),
+  ]);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
