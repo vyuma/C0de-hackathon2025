@@ -43,16 +43,9 @@ TEST_ISBNs = [
     response_model=dict
 )
 async def initialize_database(
-    confirm: bool = Query(..., description="Set to **True** to proceed."),
     db_engine: any = Depends(connection.get_engine),
     db_session: Session = Depends(connection.get_db)
 ):
-    if not confirm:
-        raise HTTPException(
-            status_code=400,
-            detail="Initialization not confirmed. Set 'confirm' to True."
-        )
-
     try:
         book_model.Base.metadata.drop_all(bind=db_engine)
         book_model.Base.metadata.create_all(bind=db_engine)
