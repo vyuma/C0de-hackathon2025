@@ -168,7 +168,7 @@ async def fetch_book_from_openbd(isbn: str) -> Optional[BookExternalInfo]:
                 price_amount = price[0].get("PriceAmount") if price else None
                 cost = re.findall(r"\d+", price_amount)
 
-                print("openBD completed")
+                
                 return BookExternalInfo(
                     isbn=isbn,
                     title=title,
@@ -189,6 +189,9 @@ async def fetch_book_from_openbd(isbn: str) -> Optional[BookExternalInfo]:
         return None
 
 async def get_book_info(isbn: str) -> Optional[BookExternalInfo]:
+    book = await fetch_book_from_openbd(isbn)
+    if book:
+        return book
     book = await fetch_book_from_google_books(isbn)
     if book:
         return book
